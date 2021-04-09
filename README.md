@@ -1,5 +1,5 @@
 # Skripsi
-## My final undergraduate thesis on UIN Jakarta
+## Undergraduate thesis on UIN Jakarta
 
 One day i thought someone in the wild will eat a poisonous mushroom and it will be bad day or last day for him and then i speculate why dont i build a application using
 deep neural network to differenciate edible mushroom and not edible mushroom. As fast i can googled this subject what i had found that others already build this model and appliaction 
