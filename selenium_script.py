@@ -14,67 +14,53 @@ from selenium.common.exceptions import (
 from selenium.webdriver.support.ui import WebDriverWait
 
 
-
-PATH = "C:\Program Files (x86)\chromedriver.exe"
-IMAGES_PATH = "D:\projectmachinelearning\Skripsi\images"
+PATH = "/usr/local/bin/chromedriver"
+IMAGES_PATH = "/Users/shidqi/Documents/Skripsi/images"
 driver = webdriver.Chrome(PATH)
 inedible_img = ""
 
 
-
 for x in range(15):
 
-	driver.get("https://www.mushroom.world/mushrooms/poisonous?page=%d" % x)
-	
-	if x == 0:
-		time.sleep(0.5)
-		cookie = driver.find_element_by_xpath("//*[@id='cc_container']/button")
-		cookie.click()
-		time.sleep(5)
-		gotit = driver.find_element_by_xpath("/html/body/div[4]/div/input[1]")
-		gotit.click()
-		
-	page_image = driver.find_elements_by_tag_name('img')
+    driver.get("https://www.mushroom.world/mushrooms/poisonous?page=%d" % x)
 
-	if page_image == []:		
-		break
+    if x == 0:
+        time.sleep(0.5)
+        cookie = driver.find_element(
+            by=By.XPATH, value="//*[@id='cc_container']/button")
+        cookie.click()
+        time.sleep(5)
+        gotit = driver.find_element(
+            by=By.XPATH, value="/html/body/div[4]/div/input[1]")
+        gotit.click()
 
-	try:
-		while True:		
-			images = driver.find_elements_by_tag_name('img')
-			time.sleep(60)		
-			for image in images:
-				try:					
-					singleimage = image.get_attribute('src')					
-					print(f"downloading {singleimage}")
-					imagecontent = requests.get(singleimage).content
-					file_path = os.path.join(IMAGES_PATH, hashlib.sha1(imagecontent).hexdigest()[:10] + '.jpg')
-					with open(file_path, 'wb') as f:
-						f.write(imagecontent)
-					print(f"Download {singleimage} completed")	
-				except Exception as e:
-					print(f"could not load image {singleimage}, {e}")
-					driver.close()		
-					raise e
-			break
+    page_image = driver.find_elements_by_tag_name('img')
 
-	except ElementNotVisibleException:
-		driver.close()
+    if page_image == []:
+        break
 
-print(f"operation complete")			
-driver.close()	
-	
-			
-			
-	
+    try:
+        while True:
+            images = driver.find_elements_by_tag_name('img')
+            time.sleep(60)
+            for image in images:
+                try:
+                    singleimage = image.get_attribute('src')
+                    # print(f"downloading {singleimage}")
+                    imagecontent = requests.get(singleimage).content
+                    file_path = os.path.join(IMAGES_PATH, hashlib.sha1(
+                        imagecontent).hexdigest()[:10] + '.jpg')
+                    with open(file_path, 'wb') as f:
+                        f.write(imagecontent)
+                    # print(f"Download {singleimage} completed")
+                except Exception as e:
+                    # print(f"could not load image {singleimage}, {e}")
+                    driver.close()
+                    raise e
+            break
 
-	
+    except ElementNotVisibleException:
+        driver.close()
 
-
-
-
-
-	
-
-
-
+# print(f"operation complete")
+driver.close()
